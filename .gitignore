@@ -223,3 +223,6 @@ tenc
 
 # Plugins Folder
 plugins/*
+!plugins/roll_dice.dbot.js
+!plugins/message_output.dbot.js
+!plugins/request_q.dbot.js
