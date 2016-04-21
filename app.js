@@ -256,6 +256,17 @@ function connectToDiscord() {
         api.misc = {
             serverFromChannel: discord.serverFromChannel
         };
+        // Load all Plugins in the ./plugins directory
+        var quiet_loading = true;
+        plugin_loader.listPlugins().forEach(function (item) {
+            var plugin_state = plugin_loader.getInitialPluginState(item);
+            if (plugin_state === "running" || plugin_state === "loaded") {
+                plugin_loader.loadPlugin(item, quiet_loading);
+            }
+            if (plugin_state === "running") {
+                plugin_loader.startPlugin(item, quiet_loading);
+            }
+        });
     }).on("message", function (_username, _userID, _channelID, _message, _rawEvent) {
         api.Events.emit("message_raw", _rawEvent);
         if (_userID === api.client.id) {
@@ -331,18 +342,6 @@ function connectToDiscord() {
             api.Events.emit("chatCmd_raw", _rawEvent);
             api.Events.emit("chatCmd#" + cmd + "_raw", _rawEvent);
         }
-
-        // Load all Plugins in the ./plugins directory
-        var quiet_loading = true;
-        plugin_loader.listPlugins().forEach(function (item) {
-            var plugin_state = plugin_loader.getInitialPluginState(item);
-            if (plugin_state === "running" || plugin_state === "loaded") {
-                plugin_loader.loadPlugin(item, quiet_loading);
-            }
-            if (plugin_state === "running") {
-                plugin_loader.startPlugin(item, quiet_loading);
-            }
-        });
     }).on("presence", function (_username, _userID, _status, _gameName, _rawEvent) {
         api.Events.emit("presence", {
             username: _username,
@@ -368,7 +367,7 @@ function connectToDiscord() {
 initPluginLoader();
 
 // Load commandline args as env variables
-commander.version("1.0.0").usage("[options]")
+commander.version("1.0.1").usage("[options]")
 .option("-e, --email <Picarto Channel>", "Set the bots Login Username.")
 .option("-p, --password <Bot name>", "Set the bot's Login Password.")
 .option("-t, --token <Token>", "Use an already existing token to login.")
