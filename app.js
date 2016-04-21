@@ -367,7 +367,7 @@ function connectToDiscord() {
 initPluginLoader();
 
 // Load commandline args as env variables
-commander.version("1.0.0").usage("[options]")
+commander.version("1.0.1").usage("[options]")
 .option("-e, --email <Picarto Channel>", "Set the bots Login Username.")
 .option("-p, --password <Bot name>", "Set the bot's Login Password.")
 .option("-t, --token <Token>", "Use an already existing token to login.")
