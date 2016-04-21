@@ -1,0 +1,43 @@
+{
+  "author": "Marcel Hinsch",
+  "bin": {
+    "discord-bot": "app.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Wolvan/ExtendableDiscordBot/issues"
+  },
+  "dependencies": {
+    "cli-clear": "^1.0.4",
+    "columnify": "^1.5.4",
+    "commander": "^2.9.0",
+    "discord.io": "^1.8.1",
+    "node-persist": "0.0.8",
+    "read": "^1.0.7",
+    "require-reload": "^0.2.2"
+  },
+  "description": "A plugin-based Bot for the Discord Chat Application",
+  "devDependencies": { },
+  "homepage": "https://github.com/Wolvan/ExtendableDiscordBot#readme",
+  "keywords": [
+    "bot",
+    "discord",
+    "discord.io",
+    "plugins",
+    "extendable",
+    "discordapp"
+  ],
+  "license": "GPL-2.0",
+  "main": "app.js",
+  "name": "extendable-discord-bot",
+  "optionalDependencies": {
+    "node-opus": "^0.1.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wolvan/ExtendableDiscordBot.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}
