@@ -39,7 +39,7 @@ api.VERSION = CURRENT_VERSION;
 function initPluginLoader() {
     var loader_storage = storage.create({ dir: process.cwd() + "/storage/plugin_loader" });
     loader_storage.initSync();
-    plugin_loader = require("./modules/plugin_loader.js"); plugin_loader = new plugin_loader(api, loader_storage);
+    plugin_loader = require("./modules/plugin_loader.js"); plugin_loader = new plugin_loader(api, loader_storage, CURRENT_VERSION);
     api.plugin_manager = {
         load: function (file_id, quiet) {
             console.log("[Plugin]Plugin requests loading of " + file_id);
