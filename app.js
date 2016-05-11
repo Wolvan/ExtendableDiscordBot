@@ -568,23 +568,34 @@ function plugin_cmd(args) {
                 var plugin_info; var plugin_state; var plugin;
                 var list = plugin_loader.listPlugins();
                 for (var plugin_index in list) {
-                    plugin = list[plugin_index];
-                    plugin_info = plugin_loader.getPluginInfo(plugin);
-                    if (plugin_loader.isPluginRunning(plugin)) {
-                        plugin_state = "Running";
-                    } else if (plugin_loader.isPluginLoaded(plugin)) {
-                        plugin_state = "Stopped";
-                    } else {
-                        plugin_state = "Unloaded"
+                    try {
+                        plugin = list[plugin_index];
+                        plugin_info = plugin_loader.getPluginInfo(plugin);
+                        if (plugin_loader.isPluginRunning(plugin)) {
+                            plugin_state = "Running";
+                        } else if (plugin_loader.isPluginLoaded(plugin)) {
+                            plugin_state = "Stopped";
+                        } else {
+                            plugin_state = "Unloaded"
+                        }
+                        data.push({
+                            plugin_name: plugin_info.Name,
+                            plugin_version: plugin_info.Version,
+                            plugin_author: plugin_info.Author,
+                            plugin_description: plugin_info.Description,
+                            plugin_state: plugin_state,
+                            plugin_file: plugin.replace(/\.dbot\.js/, ""),
+                        });
+                    } catch (ex) {
+                        data.push({
+                            plugin_name: "ERROR",
+                            plugin_version: "ERROR",
+                            plugin_author: "ERROR",
+                            plugin_description: ex,
+                            plugin_state: "errored",
+                            plugin_file: plugin.replace(/\.dbot\.js/, ""),
+                        });
                     }
-                    data.push({
-                        plugin_name: plugin_info.Name,
-                        plugin_version: plugin_info.Version,
-                        plugin_author: plugin_info.Author,
-                        plugin_description: plugin_info.Description,
-                        plugin_state: plugin_state,
-                        plugin_file: plugin.replace(/\.pbot\.js/, ""),
-                    });
                     data.push(column_divider);
                 }
                 console.log(
