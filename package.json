@@ -13,7 +13,9 @@
     "discord.io": "^1.8.1",
     "node-persist": "0.0.8",
     "read": "^1.0.7",
-    "require-reload": "^0.2.2"
+    "request": "^2.72.0",
+    "require-reload": "^0.2.2",
+    "semver": "^5.1.0",
   },
   "description": "A plugin-based Bot for the Discord Chat Application",
   "devDependencies": { },
