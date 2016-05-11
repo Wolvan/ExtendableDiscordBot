@@ -4,6 +4,8 @@
 var appDir = require("path").dirname(require.main.filename);
 process.chdir(appDir);
 
+var CURRENT_VERSION = require('./package.json').version;
+
 var commander = require("commander");
 var EventEmitter = require("events");
 var storage = require("node-persist");
@@ -16,9 +18,23 @@ var api = {};
 var store = storage.create({ dir: process.cwd() + "/storage/main_app" });
 store.initSync();
 
+require("request").get("https://registry.npmjs.org/extendable-discord-bot", function (err, response, body) {
+    if (err) return;
+    var LATEST_VERSION = CURRENT_VERSION;
+    try { LATEST_VERSION = JSON.parse(body)['dist-tags'].latest; } catch (e) { return; }
+    if (require("semver").lt(CURRENT_VERSION, LATEST_VERSION)) {
+        console.log("[WARNING]: Your bot is out of date! Your version is " + CURRENT_VERSION + ", but the latest version is " + LATEST_VERSION + ". Consider updating!");
+        api.UPDATE_AVAILABLE = true;
+        api.LATEST_VERSION = LATEST_VERSION;
+    } else {
+        api.UPDATE_AVAILABLE = false;
+    }
+});
+
 api.Events = new EventEmitter;
 api.sharedStorage = storage.create({ dir: process.cwd() + "/storage/shared_storage" });
 api.sharedStorage.initSync();
+api.VERSION = CURRENT_VERSION;
 
 function initPluginLoader() {
     var loader_storage = storage.create({ dir: process.cwd() + "/storage/plugin_loader" });
@@ -367,7 +383,7 @@ function connectToDiscord() {
 initPluginLoader();
 
 // Load commandline args as env variables
-commander.version("1.0.2").usage("[options]")
+commander.version(CURRENT_VERSION).usage("[options]")
 .option("-e, --email <Picarto Channel>", "Set the bots Login Username.")
 .option("-p, --password <Bot name>", "Set the bot's Login Password.")
 .option("-t, --token <Token>", "Use an already existing token to login.")
