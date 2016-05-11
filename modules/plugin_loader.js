@@ -32,9 +32,10 @@ function InvalidPluginError(message, filename) {
 InvalidPluginError.prototype = Object.create(Error.prototype);
 InvalidPluginError.prototype.constructor = InvalidPluginError;
 
-function plugin_loader(_api, _storage, _basedir) {
+function plugin_loader(_api, _storage, _api_version, _basedir) {
     this.api = _api || {};
     this.storage = _storage || node_persist.create({ dir: process.cwd() + "/storage/plugin_loader" }).initSync();
+    this.api_version = _api_version || "1.0.0";
     if (!_basedir) { _basedir = process.cwd(); }
     this.basedir = _basedir;
     this.plugins_dir = _basedir + _plugin_dir;
@@ -67,7 +68,7 @@ plugin_loader.prototype.getPlugin = function (file_id) {
     try {
         var plugin = reload(plugin_file);
     } catch (ex) {
-        throw new InvalidPluginError("Plugin has an error", file_id);
+        throw new InvalidPluginError("Plugin has a syntax error", file_id);
     }
     
     if (!plugin.meta_inf) {
@@ -87,7 +88,8 @@ plugin_loader.prototype.getPluginInfo = function (file_id) {
         Version: plugin.meta_inf.version || "0.0.0",
         Description: plugin.meta_inf.description || "No Description available",
         Author: plugin.meta_inf.author || "",
-        Dependencies: plugin.meta_inf.dependencies || {}
+        Dependencies: plugin.meta_inf.dependencies || {},
+        APIVersion: plugin.meta_inf.api_version_required || "*"
     }
 }
 
@@ -137,6 +139,10 @@ plugin_loader.prototype.loadPlugin = function (file_id, quiet) {
         }
         var plugin = this.getPlugin(file_id);
         var pluginInfo = this.getPluginInfo(file_id);
+        if (!require("semver").satisfies(this.api_version, pluginInfo.APIVersion)) {
+            if (!quiet) console.log("[PluginLoader]Plugin '" + file_id + "' requires a more recent API version, you may need to update the bot. Requested version: " + pluginInfo.APIVersion + ". Your version: " + this.api_version);
+            return false;
+        }
         injectDependencies(pluginInfo.Dependencies);
         var plugin_store = node_persist.create({ dir: this.basedir + "/storage/plugins/" + file_id });
         plugin_store.initSync();
