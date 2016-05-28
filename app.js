@@ -32,6 +32,7 @@ require("request").get("https://registry.npmjs.org/extendable-discord-bot", func
 });
 
 api.Events = new EventEmitter;
+api.Events.setMaxListeners(0);
 api.sharedStorage = storage.create({ dir: process.cwd() + "/storage/shared_storage" });
 api.sharedStorage.initSync();
 api.VERSION = CURRENT_VERSION;
