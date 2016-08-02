@@ -177,18 +177,28 @@ function connectToDiscord() {
         api.Messages = {
             sendMessage: discord.sendMessage,
             send: function (_to, _message) {
+				var msg = _message;
+				if (msg.length > 2000) {
+					console.log("Message exceeds character limit. Message length: " + msg.length);
+					msg = "Message exceeds Discord character limit.";
+				}
                 discord.sendMessage({
                     to: _to,
-                    message: _message,
+                    message: msg,
                     tts: false,
                     typing: false
                 });
                 api.Events.emit("sendMessage", _to, _message);
             },
             sendTTS: function (_to, _message) {
+				var msg = _message;
+				if (msg.length > 2000) {
+					console.log("Message exceeds character limit. Message length: " + msg.length);
+					msg = "Message exceeds Discord character limit.";
+				}
                 discord.sendMessage({
                     to: _to,
-                    message: _message,
+                    message: msg,
                     tts: true,
                     typing: false
                 });
