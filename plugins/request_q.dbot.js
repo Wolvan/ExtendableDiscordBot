@@ -44,13 +44,13 @@ function handleCmd(data) {
         var requests = storage.getItem(data.channelID + "_requests") || [];
         requests.push(args.join(" "));
         storage.setItem(data.channelID + "_requests", requests);
-        api.Messages.send(data.channelID, "Added request '" + args.join(" ") + "'");
+        api.Messages.send(data.channelID, "Added request '" + args.join(" ") + "' with ID " + requests.length);
     }
 }
 module.exports = {
     meta_inf: {
         name: "Request Queue",
-        version: "1.0.0",
+        version: "1.1.0",
         description: "Store requests for later.",
         author: "Wolvan"
     },
