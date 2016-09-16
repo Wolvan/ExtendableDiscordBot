@@ -24,14 +24,15 @@ This is an extendable bot for Discord chats. By itself it does nothing, that's w
 4. Run it with `discord-bot [-e|-p|-t|--help]`
 5. Use the `help` command for a list of commands when the bot is running
 
-### from GitHub (locally)
+### from GitHub (locally) (recommended)
 1. Install NodeJS with npm
 2. Clone this repository or download the source as .zip file
 3. Open a command prompt or terminal and navigate to the folder you cloned the repository to
 4. Run `npm install` from a command prompt or terminal
-5. Install Plugins
-6. Run the bot with `node app.js [-e|-p|-t|--help]`
-7. Use the `help` command for a list of commands when the bot is running
+5. Run `npm install discord.io@1.8.1`
+6. Install Plugins
+7. Run the bot with `node app.js [-e|-p|-t|--help]`
+8. Use the `help` command for a list of commands when the bot is running
 
 ## Install plugins
 Plugin installation is easy! Download the file with the extension `.dbot.js` and put it in the `/plugins` directory of the bot. Load it by typing `plugins enable <filename>` or by restarting the bot.
