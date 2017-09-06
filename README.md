@@ -19,6 +19,13 @@ This is an extendable bot for Discord chats. By itself it does nothing, that's w
 * Lightweight: Being a NodeJS app makes it easily deployable everywhere! Even on low power servers
 * Console commands allow you to administrate the bot easily
 * Plugin API: The bot doesn't really do anything by itself, you install Plugins for functionality. The following plugins come pre-installed:
+    * `advancedRandom.dbot2.js` A library with more advanced random number generation algorithms
+	* `rollDice.dbot2.js` An dice rolling script that allows to roll any number of dice
+	* `help.dbot2.js` Shows help text when using the help command
+	* `welcome.dbot2.js` Use custom messages to greet or say goodbye to users on your server
+	* `messageOutput.dbot2.js` Print messages from chats to your console
+	* `requestQ.dbot2.js` A queue plugin for requests or commissions. Also handy for reminders
+    * `credits.dbot2.js` Information about where to find out more about this bot
 
 ## Install the bot
 

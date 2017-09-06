@@ -233,3 +233,10 @@ tenc
 
 # Plugins Folder
 plugins/*
+!plugins/advancedRandom.dbot2.js
+!plugins/rollDice.dbot2.js
+!plugins/help.dbot2.js
+!plugins/welcome.dbot2.js
+!plugins/messageOutput.dbot2.js
+!plugins/requestQ.dbot2.js
+!plugins/credits.dbot2.js
