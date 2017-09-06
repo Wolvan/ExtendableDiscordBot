@@ -1,0 +1,49 @@
+{
+    "author": "Wolvan <wolvan1@gmail.com> (https://github.com/Wolvan/)",
+    "contributors": [
+        "Amm"
+    ],
+    "bin": {
+        "discord-bot": "main.js"
+    },
+    "bugs": {
+        "url": "https://github.com/NodeJSBots/ExtendableDiscordBot/issues"
+    },
+    "dependencies": {
+        "asn1": "^0.2.3",
+        "assign-deep": "^0.4.5",
+        "bluebird": "^3.5.0",
+        "cli-clear": "^1.0.4",
+        "columnify": "^1.5.4",
+        "commander": "^2.9.0",
+        "discord.io": "^2.5.1",
+        "eventemitter2": "^4.1.0",
+        "node-persist": "^2.0.11",
+        "read": "^1.0.7",
+        "request": "^2.81.0",
+        "require-reload": "^0.2.2",
+        "semver": "^5.3.0"
+    },
+    "description": "A plugin-based Bot for the Discord Chat Application",
+    "homepage": "https://github.com/NodeJSBots/ExtendableDiscordBot#readme",
+    "keywords": [
+        "bot",
+        "discord",
+        "discord.io",
+        "plugins",
+        "extendable",
+        "discordapp"
+    ],
+    "license": "MIT",
+    "main": "main.js",
+    "name": "extendable-discord-bot",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NodeJSBots/ExtendableDiscordBot.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "2.0.0",
+    "devDependencies": {}
+}
