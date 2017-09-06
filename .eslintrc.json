@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": false,
+        "commonjs": false,
+        "es6": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "impliedStrict": true
+        },
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-const-assign": "warn",
+        "no-this-before-super": "warn",
+        "no-undef": "warn",
+        "no-unreachable": "warn",
+        "no-unused-vars": "warn",
+        "semi": "warn",
+        "semi-spacing": "warn",
+        "constructor-super": "warn",
+        "valid-typeof": "warn",
+        "default-case": "warn",
+        "array-bracket-spacing": "warn",
+        "brace-style": "warn",
+        "camelcase": "warn",
+        "no-fallthrough": "warn"
+    }
+}
