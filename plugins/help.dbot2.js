@@ -21,7 +21,7 @@ module.exports = {
                 api.message.send(data.channelID, api.commands.getCommand(data.args[0]).getHelp());
                 return;
             }
-            api.message.send(data.channelID, api.message.chunkify(Object.values(api.commands.getCommands()).filter(object => {
+            api.message.send(data.channelID, api.message.chunkify(Object.keys(api.commands.getCommands()).map((item) => api.commands.getCommands()[item]).filter(object => {
                 let permObject = {
                     command: object.command,
                     args: [],
