@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
     const META = {
         author: "Wolvan",
         name: "Commands",
@@ -143,12 +143,12 @@
             var tmp = resolvedCommand;
             var tmpArg;
             var simpleCommandString = rawCommandString;
-            if (tmp) simpleCommandString = simpleCommandString.substr(tmp.getSelfCommand().length + 1);
+            if (tmp) simpleCommandString = simpleCommandString.substr(cmd.length + 1);
             while (tmp) {
                 resolvedCommand = tmp;
                 tmpArg = args.splice(0, 1)[0];
                 tmp = tmp.getCommand(tmpArg);
-                if (tmp) simpleCommandString = simpleCommandString.substr(tmp.getSelfCommand().length + 1);
+                if (tmp) simpleCommandString = simpleCommandString.substr(tmpArg.length + 1);
             }
             if (tmpArg) args.unshift(tmpArg);
             if (resolvedCommand) return {
@@ -169,7 +169,7 @@
     class Command extends CommandContainer {
         constructor() {
             super();
-            callbacks.set(this, function() {
+            callbacks.set(this, function () {
                 // A default function that should be changed by calling
                 // setFunction(callback) on the command object
                 // It prints the attached help by default
