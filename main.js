@@ -83,7 +83,7 @@ function loadConfig() {
 }
 
 function checkUpdate() {
-    updater.checkUpdate().then(function(data) {
+    updater.checkUpdate().then(function (data) {
         if (data.newerVersion) {
             console.log([
                 " ",
@@ -140,7 +140,7 @@ function initPluginLoader() {
         fileExt: config.pluginFileExt,
     });
 
-    pluginLoader.listPlugins().forEach(function(item) {
+    pluginLoader.listPlugins().forEach(function (item) {
         try {
             let pluginState = pluginLoader.getInitialPluginState(item);
             let dependenciesSatisfied;
@@ -259,28 +259,28 @@ function initAPI1() {
             "@": "GENERAL_ADMINISTRATOR",
             "#": "GENERAL_OWNER"
         },
-        convertLettersToPermission: function(input = "") {
+        convertLettersToPermission: function (input = "") {
             let permset = input.split(";")[0] || "";
             let letters = permset.replace(/[^a-zA-Z@#]/g, "").toLowerCase().split("");
             letters = [...new Set(letters)];
             let flags = 0;
-            letters.forEach(function(element) {
+            letters.forEach(function (element) {
                 flags |= (api.permission.FLAGS[api.permission.LETTERS_TO_FLAGS[element]] || 0);
             }, this);
             return flags;
         },
-        permissionCheck: function(permissions, perm) {
+        permissionCheck: function (permissions, perm) {
             if (typeof permissions === "string") permissions = api.permission.convertLettersToPermission(permissions);
             if (typeof perm === "string") perm = api.permission.convertLettersToPermission(perm);
             return (permissions & perm) === perm;
         },
-        __checkFunction: function() {
+        __checkFunction: function () {
             return true;
         }
     };
 
     // TODO: IMPLEMENT SKYNET
-    api.becomeSkynet = function() {
+    api.becomeSkynet = function () {
 
     };
 }
@@ -318,31 +318,31 @@ function initAPI2() {
         isVerified: discord.verified,
         connected: discord.connected,
         presence: discord.presenceStatus,
-        getUser: function(userID, callback) {
+        getUser: function (userID, callback) {
             if (!discord.bot) console.warn(BOT_ONLY_WARN);
             discord.getUser({ userID: userID }, callback);
         },
         userInfo: {
-            changeEmail: function(newEmail, callback) {
+            changeEmail: function (newEmail, callback) {
                 if (discord.bot) console.warn(USER_ONLY_WARN);
                 discord.editUserInfo({
                     email: newEmail,
                     password: config.login.password || null
                 }, callback);
             },
-            changeUsername: function(newName, callback) {
+            changeUsername: function (newName, callback) {
                 discord.editUserInfo({
                     password: config.login.password || null,
                     username: newName
                 }, callback);
             },
-            changeAvatar: function(icon, callback) {
+            changeAvatar: function (icon, callback) {
                 discord.editUserInfo({
                     avatar: icon,
                     password: config.login.password || null
                 }, callback);
             },
-            changeAvatarFromFile: function(filepath, callback) {
+            changeAvatarFromFile: function (filepath, callback) {
                 discord.editUserInfo({
                     avatar: fs.readFileSync(filepath, "base64"),
                     password: config.login.password || null
@@ -353,7 +353,7 @@ function initAPI2() {
         setPresence: discord.setPresence.bind(discord),
         getOauthInfo: discord.getOauthInfo.bind(discord),
         getAccountSettings: discord.getAccountSettings.bind(discord),
-        editNickname: function(serverID, nickname, callback) {
+        editNickname: function (serverID, nickname, callback) {
             discord.editNickname({
                 serverID: serverID,
                 userID: discord.id,
@@ -369,11 +369,11 @@ function initAPI2() {
     api.discord = discord;
 
     api.connection = {
-        connect: function() {
+        connect: function () {
             discord.connect();
             api.connected = discord.connected;
         },
-        disconnect: function() {
+        disconnect: function () {
             manualDisconnect = true;
             discord.disconnect();
             api.connected = discord.connected;
@@ -386,14 +386,14 @@ function initAPI2() {
         edit: discord.editWebhook.bind(discord)
     };
     api.server = {
-        leave: function(serverID, callback) {
+        leave: function (serverID, callback) {
             discord.leaveServer(serverID, (error, response) => {
                 if (!error) api.events.emit("leftDiscordServer", { response: response, serverID: serverID });
                 if (callback) callback(error, response);
             });
         },
-        delete: function(serverID, callback) {
-            discord.deleteServer(serverID, function(error, response) {
+        delete: function (serverID, callback) {
+            discord.deleteServer(serverID, function (error, response) {
                 if (!error) api.Events.emit("deletedDiscordServer", { serverID: serverID, response: response });
                 if (callback) callback(error, response);
             });
@@ -401,7 +401,7 @@ function initAPI2() {
         transferOwnership: discord.transferOwnership.bind(discord),
         editWidget: discord.editServerWidget.bind(discord),
         edit: discord.editServer.bind(discord),
-        create: function(options, callback) {
+        create: function (options, callback) {
             if (discord.bot) console.warn(USER_ONLY_WARN);
             discord.createServer(options, (error, response) => {
                 if (!error) api.events.emit("createdDiscordServer", { response: response });
@@ -416,7 +416,7 @@ function initAPI2() {
         getAudioContext: discord.getAudioContext.bind(discord)
     };
     api.emoji = {
-        addReaction: function(channelID, messageID, reaction, callback) {
+        addReaction: function (channelID, messageID, reaction, callback) {
             discord.addReaction({
                 channelID: channelID,
                 messageID: messageID,
@@ -425,7 +425,7 @@ function initAPI2() {
         },
         // TODO: What is this?!
         getReaction: discord.getReaction.bind(discord),
-        removeReaction: function(channelID, messageID, reaction, userID, callback) {
+        removeReaction: function (channelID, messageID, reaction, userID, callback) {
             if (typeof userID === "function") callback = userID;
             discord.removeReaction({
                 channelID: channelID,
@@ -434,13 +434,13 @@ function initAPI2() {
                 userID: (typeof userID !== "function" ? userID : null)
             }, callback);
         },
-        removeAllReactions: function(channelID, messageID, callback) {
+        removeAllReactions: function (channelID, messageID, callback) {
             discord.removeAllReactions({
                 channelID: channelID,
                 messageID: messageID
             }, callback);
         },
-        addServer: function(serverID, name, base64Image, callback) {
+        addServer: function (serverID, name, base64Image, callback) {
             if (discord.bot) console.warn(USER_ONLY_WARN);
             discord.addServerEmoji({
                 serverID: serverID,
@@ -448,14 +448,14 @@ function initAPI2() {
                 image: base64Image
             }, callback);
         },
-        deleteServer: function(serverID, emojiID, callback) {
+        deleteServer: function (serverID, emojiID, callback) {
             if (discord.bot) console.warn(USER_ONLY_WARN);
             discord.deleteServerEmoji({
                 serverID: serverID,
                 emojiID: emojiID
             }, callback);
         },
-        editServer: function() {
+        editServer: function () {
             if (discord.bot) console.warn(USER_ONLY_WARN);
             discord.editServerEmoji.apply(discord, arguments);
         }
@@ -463,20 +463,20 @@ function initAPI2() {
     api.role = {
         create: discord.createRole.bind(discord),
         edit: discord.editRole.bind(discord),
-        delete: function(serverID, roleID, callback) {
+        delete: function (serverID, roleID, callback) {
             discord.deleteRole({
                 serverID: serverID,
                 roleID: roleID
             }, callback);
         },
-        addMember: function(serverID, roleID, userID, callback) {
+        addMember: function (serverID, roleID, userID, callback) {
             discord.addToRole({
                 serverID: serverID,
                 userID: userID,
                 roleID: roleID
             }, callback);
         },
-        removeMember: function(serverID, roleID, userID, callback) {
+        removeMember: function (serverID, roleID, userID, callback) {
             discord.removeFromRole({
                 serverID: serverID,
                 userID: userID,
@@ -498,13 +498,13 @@ function initAPI2() {
         },
         create: discord.createInvite.bind(discord),
         */
-        delete: function(inviteCode, callback) {
+        delete: function (inviteCode, callback) {
             if (inviteCode.indexOf("/") !== -1) {
                 inviteCode = inviteCode.substring(inviteCode.lastIndexOf("/") + 1);
             }
             discord.deleteInvite(inviteCode, callback);
         },
-        query: function(inviteCode, callback) {
+        query: function (inviteCode, callback) {
             if (inviteCode.indexOf("/") !== -1) {
                 inviteCode = inviteCode.substring(inviteCode.lastIndexOf("/") + 1);
             }
@@ -514,13 +514,13 @@ function initAPI2() {
         getChannel: discord.getChannelInvites.bind(discord)
     };
     api.channel = {
-        create: function(serverID, name, type, callback) {
+        create: function (serverID, name, type, callback) {
             if (typeof type === "function") callback = type;
             discord.createChannel({
                 serverID: serverID,
                 name: name,
                 type: (typeof type !== "function" ? type : null)
-            }, function(error, response) {
+            }, function (error, response) {
                 if (!error) api.Events.emit("createdDiscordChannel", response);
                 if (callback) callback(error, response);
             });
@@ -529,23 +529,23 @@ function initAPI2() {
         delete: discord.deleteChannel.bind(discord),
         editInfo: discord.editChannelInfo.bind(discord),
         editPermission: discord.editChannelPermissions.bind(discord),
-        deletePermission: function(channelID, input, callback) {
+        deletePermission: function (channelID, input, callback) {
             discord.deleteChannelPermission(Object.assign({
                 channelID: channelID
             }, input), callback);
         },
-        getServer: function(channelID) {
+        getServer: function (channelID) {
             return (discord.channels && discord.channels[channelID] && discord.channels[channelID].guild_id ? discord.channels[channelID].guild_id : null);
         }
     };
     api.member = {
-        kick: function(serverID, userID, callback) {
+        kick: function (serverID, userID, callback) {
             discord.kick({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        ban: function(serverID, userID, lastDays, callback) {
+        ban: function (serverID, userID, lastDays, callback) {
             if (typeof lastDays === "function") callback = lastDays;
             discord.ban({
                 serverID: serverID,
@@ -553,44 +553,44 @@ function initAPI2() {
                 lastDays: (typeof lastDays !== "function" ? lastDays : null)
             }, callback);
         },
-        unban: function(serverID, userID, callback) {
+        unban: function (serverID, userID, callback) {
             discord.unban({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        moveTo: function(serverID, userID, channelID, callback) {
+        moveTo: function (serverID, userID, channelID, callback) {
             discord.moveUserTo({
                 serverID: serverID,
                 userID: userID,
                 channelID: channelID
             }, callback);
         },
-        mute: function(serverID, userID, callback) {
+        mute: function (serverID, userID, callback) {
             discord.mute({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        unmute: function(serverID, userID, callback) {
+        unmute: function (serverID, userID, callback) {
             discord.unmute({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        deafen: function(serverID, userID, callback) {
+        deafen: function (serverID, userID, callback) {
             discord.deafen({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        undeafen: function(serverID, userID, callback) {
+        undeafen: function (serverID, userID, callback) {
             discord.undeafen({
                 serverID: serverID,
                 userID: userID
             }, callback);
         },
-        get: function(serverID, userID, callback) {
+        get: function (serverID, userID, callback) {
             if (typeof serverID === 'number') {
                 discord.getMembers({
                     limit: serverID,
@@ -608,14 +608,14 @@ function initAPI2() {
         getMulti: discord.getMembers.bind(discord),
         */
         getAll: discord.getAllUsers.bind(discord),
-        editNickname: function(serverID, userID, nickname, callback) {
+        editNickname: function (serverID, userID, nickname, callback) {
             discord.editNickname({
                 serverID: serverID,
                 userID: userID,
                 nick: nickname
             }, callback);
         },
-        editNote: function(userID, note, callback) {
+        editNote: function (userID, note, callback) {
             discord.editNote({
                 userID: userID,
                 note: note
@@ -623,7 +623,7 @@ function initAPI2() {
         }
     };
     Object.assign(api.permission, {
-        getEveryoneRole: function(serverID) {
+        getEveryoneRole: function (serverID) {
             if (discord && discord.servers && discord.servers[serverID]) {
                 for (let roleID in discord.servers[serverID].roles) {
                     if (discord.servers[serverID].roles[roleID].position === 0) return roleID;
@@ -632,21 +632,21 @@ function initAPI2() {
             return null;
         },
         //Permission flow: channel user allow/deny > channel role allow > channel role deny > channel @everyone allow/deny > server role allow
-        hasPermissionFlag: function(userID, channelID, perm) {
+        hasPermissionFlag: function (userID, channelID, perm) {
             var permissions = 0;
             var serverID = api.channel.getServer(channelID);
             if (!serverID) return true;
 
             if (discord && discord.servers && discord.servers[serverID] && discord.servers[serverID].members && discord.servers[serverID].members[userID]) {
                 var roles = JSON.parse(JSON.stringify(discord.servers[serverID].members[userID].roles));
-                roles.sort(function(a, b) {
+                roles.sort(function (a, b) {
                     return discord.servers[serverID].roles[a].position > discord.servers[serverID].roles[b].position;
                 });
                 var everyoneRole = api.permission.getEveryoneRole(serverID);
 
                 //server roles permissions
                 permissions |= discord.servers[serverID].roles[everyoneRole]._permissions;
-                roles.forEach(function(element) {
+                roles.forEach(function (element) {
                     permissions |= discord.servers[serverID].roles[element]._permissions;
                 });
 
@@ -655,13 +655,13 @@ function initAPI2() {
                 if (discord.channels[channelID].permissions.role[everyoneRole]) permissions &= ~discord.channels[channelID].permissions.role[everyoneRole].deny;
 
                 //channel role permissions
-                roles.forEach(function(element) {
+                roles.forEach(function (element) {
                     if (discord.channels[channelID].permissions.role[element]) {
                         permissions &= ~discord.channels[channelID].permissions.role[element].deny;
                     }
                 });
 
-                roles.forEach(function(element) {
+                roles.forEach(function (element) {
                     if (discord.channels[channelID].permissions.role[element]) {
                         permissions |= discord.channels[channelID].permissions.role[element].allow;
                     }
@@ -677,7 +677,7 @@ function initAPI2() {
             }
             return false;
         },
-        isOwner: function(serverOrChannelID, userID) {
+        isOwner: function (serverOrChannelID, userID) {
             if (serverOrChannelID) {
                 if (discord.servers[serverOrChannelID]) {
                     return discord.servers[serverOrChannelID].owner_id === userID;
@@ -687,17 +687,17 @@ function initAPI2() {
             }
             return false;
         },
-        hasPermission: function(testID, channelID, perm = 0) {
+        hasPermission: function (testID, channelID, perm = 0) {
             return (
                 api.permission.isOwner(channelID, testID) ||
                 api.permission.hasPermissionFlag(testID, channelID, api.permission.FLAGS.GENERAL_ADMINISTRATOR) ||
                 api.permission.hasPermissionFlag(testID, channelID, perm)
             );
         },
-        isAdmin: function(testID, channelID) {
+        isAdmin: function (testID, channelID) {
             return api.permission.hasPermission(testID, channelID);
         },
-        __checkFunction: function(data) {
+        __checkFunction: function (data) {
             if (api.permission.convertLettersToPermission(data.command.getPermission())) {
                 if (api.permission.convertLettersToPermission(data.command.getPermission()) & api.permission.FLAGS.GENERAL_OWNER)
                     return api.permission.isOwner(data.channelID, data.userID);
@@ -715,7 +715,7 @@ function initAPI2() {
         }
     });
     api.message = {
-        getLength: function(message, embed) {
+        getLength: function (message, embed) {
             var length = (message ? message.length : 0);
             if (embed) {
                 if (embed && !Array.isArray(embed)) embed = [embed];
@@ -732,23 +732,23 @@ function initAPI2() {
             }
             return length;
         },
-        checkLength: function(message, embed) {
+        checkLength: function (message, embed) {
             return (api.message.getLength(message, embed) <= MSG_MAX_LENGTH);
         },
         simulateTyping: discord.simulateTyping.bind(discord),
         fix: discord.fixMessage.bind(discord),
-        deletePinned: function(channelID, messageID, callback) {
+        deletePinned: function (channelID, messageID, callback) {
             discord.deletePinnedMessage({
                 channelID: channelID,
                 messageID: messageID
             }, callback);
         },
-        getPinned: function(channelID, callback) {
+        getPinned: function (channelID, callback) {
             discord.getPinnedMessages({
                 channelID: channelID
             }, callback);
         },
-        pin: function(channelID, messageID, callback) {
+        pin: function (channelID, messageID, callback) {
             discord.pinMessage({
                 channelID: channelID,
                 messageID: messageID
@@ -763,7 +763,7 @@ function initAPI2() {
             }, callback);
         },
         */
-        delete: function(channelID, messageID, callback) {
+        delete: function (channelID, messageID, callback) {
             if (Array.isArray(messageID)) {
                 discord.deleteMessages({
                     channelID: channelID,
@@ -781,7 +781,7 @@ function initAPI2() {
         DEPRECATED
         getMulti: discord.getMessages.bind(discord),
         */
-        get: function(channelID, messageID, before, after, callback) {
+        get: function (channelID, messageID, before, after, callback) {
             if (typeof messageID === 'number') {
                 discord.getMessages({
                     channelID: channelID,
@@ -796,7 +796,7 @@ function initAPI2() {
                 }, callback);
             }
         },
-        uploadFile: function(channelID, file, filename, message, callback) {
+        uploadFile: function (channelID, file, filename, message, callback) {
             discord.uploadFile({
                 to: channelID,
                 file: file,
@@ -844,7 +844,7 @@ function initAPI2() {
             return nonces;
         }
         */
-        send: function(channelID, message, embed, typing = false, tts = false, delay = 1000, callback, nonce = []) {
+        send: function (channelID, message, embed, typing = false, tts = false, delay = 1000, callback, nonce = []) {
             if (Array.isArray(message)) {
                 let msgs = message;
                 if (embed) {
@@ -858,7 +858,7 @@ function initAPI2() {
                     nonce.push(api.message.send(channelID, msgs.shift(), null, typing, tts));
                 }
                 if (msgs.length) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         api.message.send(channelID, msgs, embed, typing, tts, delay, null, nonce);
                     }, delay);
                 }
@@ -909,10 +909,10 @@ function initAPI2() {
 
             return nonce;
         },
-        chunkify: function(chunks, separator = "\n", limit = 2000) {
+        chunkify: function (chunks, separator = "\n", limit = 2000) {
             var msgs = [];
             var msg = [];
-            chunks.forEach(function(item) {
+            chunks.forEach(function (item) {
                 if (msg.join(separator).length + item.length > limit) {
                     msgs.push(msg.join(separator));
                     msg = [];
@@ -933,7 +933,7 @@ function initDiscord() {
             autorun: true
         });
         discord
-        // Basic Discord Client Events
+            // Basic Discord Client Events
             .on("ready", (event) => {
                 api.events.emit("discord#ready", { rawEvent: event });
                 console.log("[CORE]Connected to Discord Network");
@@ -981,7 +981,7 @@ function initDiscord() {
                 if (api.client && (message.indexOf("<@" + api.client.id + ">") !== -1 || message.indexOf("<@!" + api.client.id + ">") !== -1)) {
                     api.events.emit("botMention", msgEventBase);
                 }
-                if (channelID === userID) {
+                if (api.directMessageList[channelID]) {
                     api.events.emit("directMessage", msgEventBase);
                 }
                 api.events.emit("message", msgEventBase);
@@ -1177,7 +1177,7 @@ function initDiscord() {
 function initShellCommander() {
     shellCommander = new stdinh();
     api.stdin = shellCommander;
-    shellCommander.addCommand("credits", "Show credits").setFunction(function() {
+    shellCommander.addCommand("credits", "Show credits").setFunction(function () {
         console.log([
             "Extendable Discord Bot 2",
             "The easily hackable Discord Bot with simple plugin system",
@@ -1191,7 +1191,7 @@ function initShellCommander() {
         ].join("\n"));
     });
 
-    shellCommander.addCommand("reloadconfig", "Reload the config file and environment variables", ["configreload"]).setFunction(function() {
+    shellCommander.addCommand("reloadconfig", "Reload the config file and environment variables", ["configreload"]).setFunction(function () {
         loadConfig();
         loadEnvVars();
         delete config.login;
@@ -1200,14 +1200,14 @@ function initShellCommander() {
 
     let updaterCommands = shellCommander.addCommand("updater", "Manage update notification system");
 
-    shellCommander.addCommand("clear", "Clear the bot's output", ["cls"]).setFunction(function() {
+    shellCommander.addCommand("clear", "Clear the bot's output", ["cls"]).setFunction(function () {
         cliClear();
     });
 
-    updaterCommands.addCommand("help", "Show help for updater commands", ["?"]).setFunction(function() {
+    updaterCommands.addCommand("help", "Show help for updater commands", ["?"]).setFunction(function () {
         console.log(updaterCommands.getHelp());
     });
-    updaterCommands.addCommand("stop", "Disable automatic update checking", ["disable"]).setFunction(function() {
+    updaterCommands.addCommand("stop", "Disable automatic update checking", ["disable"]).setFunction(function () {
         if (updaterTimeout) {
             clearInterval(updaterTimeout);
             updaterTimeout = null;
@@ -1215,14 +1215,14 @@ function initShellCommander() {
             console.log("[UPDATER]Updater is already disabled.");
         }
     });
-    updaterCommands.addCommand("start", "Enable automatic update checking", ["enable"]).setFunction(function() {
+    updaterCommands.addCommand("start", "Enable automatic update checking", ["enable"]).setFunction(function () {
         if (!updaterTimeout) {
             updaterTimeout = setInterval(checkUpdate, config.updates.checkInterval);
         } else {
             console.log("[UPDATER]Updater is already enabled.");
         }
     });
-    updaterCommands.addCommand("check", "Manually trigger an update check", ["checknow", "now"]).setFunction(function() {
+    updaterCommands.addCommand("check", "Manually trigger an update check", ["checknow", "now"]).setFunction(function () {
         checkUpdate();
         console.log("Update check triggered");
     });
@@ -1232,10 +1232,10 @@ function initShellCommander2() {
     let pluginCommands = shellCommander.addCommand("plugins", "Manage the bot's plugins", ["pl", "plugin"]);
     let botCommands = shellCommander.addCommand("bot", "Manage the bot's functions", ["discord"]);
 
-    pluginCommands.addCommand("help", "Show help for plugin management", ["?"]).setFunction(function() {
+    pluginCommands.addCommand("help", "Show help for plugin management", ["?"]).setFunction(function () {
         console.log(pluginCommands.getHelp());
     });
-    pluginCommands.addCommand("list", "List all current plugins").setFunction(function(args) {
+    pluginCommands.addCommand("list", "List all current plugins").setFunction(function (args) {
 
         var maxPerPage = 10;
         var pluginList = pluginLoader.listPlugins();
@@ -1265,13 +1265,13 @@ function initShellCommander2() {
             pluginFile: "----"
         };
         var data = [{
-                pluginName: "Plugin",
-                pluginVersion: "Version",
-                pluginAuthor: "Author",
-                pluginDescription: "Description",
-                pluginState: "State",
-                pluginFile: "File"
-            },
+            pluginName: "Plugin",
+            pluginVersion: "Version",
+            pluginAuthor: "Author",
+            pluginDescription: "Description",
+            pluginState: "State",
+            pluginFile: "File"
+        },
             columnDivider
         ];
 
@@ -1320,7 +1320,7 @@ function initShellCommander2() {
             }
         }) + "\n\nShowing page " + page + " of " + pages + ". " + pluginList.length + " plugins total.");
     });
-    pluginCommands.addCommand("clearstorage", "Delete all saved information of a plugin", ["deletestorage"]).setFunction(function(args) {
+    pluginCommands.addCommand("clearstorage", "Delete all saved information of a plugin", ["deletestorage"]).setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1332,7 +1332,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]" + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("load", "Load a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("load", "Load a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1350,7 +1350,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Failed to load plugin: " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("unload", "Unload a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("unload", "Unload a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1365,7 +1365,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Failed to unload plugin: " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("start", "Start a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("start", "Start a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1380,7 +1380,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Failed to start plugin: " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("stop", "Stop a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("stop", "Stop a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1395,7 +1395,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Failed to stop plugin: " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("enable", "Load and start a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("enable", "Load and start a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1423,7 +1423,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Error while enabling \"" + fileID + "\": " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("disable", "Stop and unload a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("disable", "Stop and unload a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1446,7 +1446,7 @@ function initShellCommander2() {
             console.error("[PLUGINLOADER]Error while disabling \"" + fileID + "\": " + ex + "\n" + ex.stack);
         }
     });
-    pluginCommands.addCommand("reload", "Reload a plugin").setFunction(function(args) {
+    pluginCommands.addCommand("reload", "Reload a plugin").setFunction(function (args) {
         try {
             var fileID = args.splice(0, 1)[0];
             if (fileID) {
@@ -1488,10 +1488,10 @@ function initShellCommander2() {
     });
 
 
-    botCommands.addCommand("help", "Show help for plugin management", ["?"]).setFunction(function() {
+    botCommands.addCommand("help", "Show help for plugin management", ["?"]).setFunction(function () {
         console.log(botCommands.getHelp());
     });
-    botCommands.addCommand("disconnect", "Disconnect from Discord's network").setFunction(function() {
+    botCommands.addCommand("disconnect", "Disconnect from Discord's network").setFunction(function () {
         if (api.connected) {
             api.connection.disconnect();
             api.connected = discord.connected;
@@ -1499,7 +1499,7 @@ function initShellCommander2() {
             console.log("Not connected to Discord!");
         }
     });
-    botCommands.addCommand("connect", "Connect to Discord's network").setFunction(function() {
+    botCommands.addCommand("connect", "Connect to Discord's network").setFunction(function () {
         if (!api.connected) {
             api.connection.connect();
             api.connected = discord.connected;
@@ -1507,14 +1507,14 @@ function initShellCommander2() {
             console.log("Already connected to Discord as '" + api.client.username + "'!");
         }
     });
-    botCommands.addCommand("reconnect", "Dis- and reconnect to Discord's network").setFunction(function() {
+    botCommands.addCommand("reconnect", "Dis- and reconnect to Discord's network").setFunction(function () {
         if (api.connected) api.connection.disconnect();
         api.connection.connect();
     });
-    botCommands.addCommand("exit", "Quit the bot", ["quit"]).setFunction(function() {
+    botCommands.addCommand("exit", "Quit the bot", ["quit"]).setFunction(function () {
         shellCommander.getCommand("exit").run();
     });
-    botCommands.addCommand("say", "Send a message as the bot").setFunction(function(args, simpleArgs) {
+    botCommands.addCommand("say", "Send a message as the bot").setFunction(function (args, simpleArgs) {
         const USAGE = "Usage: bot say <channel ID> <message>";
 
         let channelID = args.splice(0, 1)[0];
@@ -1530,7 +1530,7 @@ function initShellCommander2() {
 
         api.message.send(channelID, message);
     });
-    botCommands.addCommand("list", "Show servers and channels the bot is on").setFunction(function() {
+    botCommands.addCommand("list", "Show servers and channels the bot is on").setFunction(function () {
         let server;
         let channel;
         for (let serverIndex in api.serverList) {
@@ -1544,7 +1544,7 @@ function initShellCommander2() {
     });
 
 
-    shellCommander.addCommand("debug", "Breakpoint to enter JS context. Requires an attached debugger.", ["break", "breakpoint"]).setFunction(function() {
+    shellCommander.addCommand("debug", "Breakpoint to enter JS context. Requires an attached debugger.", ["break", "breakpoint"]).setFunction(function () {
         /* eslint-disable no-unused-vars */
         let dbgPluginLoader = pluginLoader;
         let dbgShellCommander = shellCommander;
@@ -1569,13 +1569,13 @@ function initShellCommander2() {
         debugger;
     });
 
-    shellCommander.addCommand("exit", "Quit the bot", ["quit"]).setFunction(function() {
+    shellCommander.addCommand("exit", "Quit the bot", ["quit"]).setFunction(function () {
         api.events.emit("shutdown");
         setTimeout(api.connection.disconnect, 500);
         setTimeout(process.exit.bind(this, 0), 1000);
     });
 
-    shellCommander.getCommand("reloadconfig").setFunction(function() {
+    shellCommander.getCommand("reloadconfig").setFunction(function () {
         loadConfig();
         loadEnvVars();
         delete config.login;
@@ -1586,7 +1586,7 @@ function initShellCommander2() {
 
 function init() {
     function connectToDiscord() {
-        initDiscord().then(function() {
+        initDiscord().then(function () {
             initAPI2();
             initPluginLoader();
             initShellCommander2();
@@ -1608,10 +1608,10 @@ function init() {
     initShellCommander();
 
     if (!config.login.token) {
-        (function() {
+        (function () {
             function readEmail(callback) {
                 shellCommander.pause();
-                read({ prompt: "EMail: " }, function(err, email) {
+                read({ prompt: "EMail: " }, function (err, email) {
                     if (!email) {
                         readEmail(callback);
                         return;
@@ -1624,7 +1624,7 @@ function init() {
 
             function readPassword(callback) {
                 shellCommander.pause();
-                read({ prompt: "Password: ", replace: "*", silent: true }, function(err, password) {
+                read({ prompt: "Password: ", replace: "*", silent: true }, function (err, password) {
                     if (!password) {
                         readPassword(callback);
                         return;
@@ -1636,13 +1636,13 @@ function init() {
             }
 
             function connect() {
-                discordAuth(config.login.email, config.login.password, config.login.disableTokenCaching).then(function(token) {
+                discordAuth(config.login.email, config.login.password, config.login.disableTokenCaching).then(function (token) {
                     config.login.token = token;
                     connectToDiscord();
                 }).catch(console.log);
             }
 
-            if (!config.login.email) readEmail(function() {
+            if (!config.login.email) readEmail(function () {
                 if (!config.login.password) readPassword(connect);
                 else connect();
             });
@@ -1656,6 +1656,6 @@ function init() {
 
 init();
 
-global.stdinCommand = function(commandString) {
+global.stdinCommand = function (commandString) {
     shellCommander.write(commandString);
 };
