@@ -971,6 +971,7 @@ function initDiscord() {
                     msg: discord.fixMessage(message),
                     msgRaw: message,
                     serverID: serverID,
+                    isDM: !!api.directMessageList[channelID],
                     rawEvent: event
                 };
                 if (api.client && userID === api.client.id) {
